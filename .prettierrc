@@ -1,0 +1,16 @@
+{
+  "htmlWhitespaceSensitivity": "ignore",
+  "printWidth": 140,
+  "tabWidth": 2,
+  "useTabs": false,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "arrowParens": "avoid",
+  "proseWrap": "preserve",
+  "semi": false,
+  "objectCurlyNewline": {
+    "consistent": true
+  }
+}

@@ -1,0 +1,58 @@
+:root {
+  /* NOTE 字体大小 */
+  /* --font-size-base: 16px; */
+  --font-size-small: theme('fontSizes.small');
+  --font-size-base: theme('fontSizes.base');
+  --font-size-h1: theme('fontSizes.h1');
+  --font-size-h2: theme('fontSizes.h2');
+  --font-size-h3: theme('fontSizes.h3');
+  --font-size-h4: theme('fontSizes.h4');
+
+  /* NOTE 字体行高 */
+  --line-height-small: theme('lineHeights.small');
+  --line-height-base: theme('lineHeights.base');
+  --line-height-h1: theme('lineHeights.h1');
+  --line-height-h2: theme('lineHeights.h2');
+  --line-height-h3: theme('lineHeights.h3');
+  --line-height-h4: theme('lineHeights.h4');
+
+  /* NOTE 字族 */
+  --font-family-base: 'Helvetica Neue', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-family-heading: 'Georgia', serif;
+
+
+  /* NOTE 颜色 */
+  /* TODO 这里目前按照暗色模式来配色，后期需要加上亮色 */
+  --color-text: #ffffff;
+  --color-background: #242424;
+  --primary: theme('colors.primary');
+
+
+
+  /* --color-primary: #3490dc;
+  --color-secondary: #6574cd;
+  --color-accent: #f6993f;
+
+  --color-gray-100: #f7fafc;
+  --color-gray-200: #edf2f7;
+  --color-gray-300: #e2e8f0;
+  --color-gray-400: #cbd5e0;
+  --color-gray-500: #a0aec0;
+  --color-gray-600: #718096;
+  --color-gray-700: #4a5568;
+  --color-gray-800: #2d3748;
+  --color-gray-900: #1a202c; */
+
+
+  /* NOTE 竖/横向向滚动条颜色 */
+  --bar-track-color: #232e33;
+  --bar-thumb-color: #6BAF8D;
+  --bar-size: 8px;
+  --bar-radius: 4px;
+
+  /* NOTE 透明度 */
+  --trans-xl: 0.8;
+  --trans-2xl: 0.6;
+  --trans-3xl: 0.4;
+  --trans-4xl: 0.2;
+}

@@ -1,0 +1,54 @@
+/* NOTE -------------------- 排版相关样式 -------------------- */
+
+/* NOTE 滚动条样式 */
+body::-webkit-scrollbar {
+  width: var(--bar-size);
+}
+
+/* 滚动条轨道 */
+body::-webkit-scrollbar-track {
+  background: var(--bar-track-color);
+}
+
+/* 滚动条指示器 */
+body::-webkit-scrollbar-thumb {
+  background: var(--bar-thumb-color);
+  border-radius: var(--bar-radius);
+}
+
+/* hover时滚动条 */
+body::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  cursor: pointer;
+}
+
+
+/* NOTE 全局样式 */
+:root {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+
+
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* color-scheme: light dark; */
+}
+
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-family-heading) !important;
+}
+
+h1 {
+  font-size: var(--font-size-h1) !important;
+  line-height: var(--line-height-h1) !important;
+}
