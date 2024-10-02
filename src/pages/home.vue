@@ -1,174 +1,394 @@
 <template>
-  <div>
-    <label>
-      <input type="checkbox" v-model="useIce"/>
-      使用冰块
-    </label>
-<!--    <div v-if="useIce" class="ice-tip">-->
-<!--      粉的粗细要比普通手冲细一些-->
-<!--    </div>-->
-    <div>
-      <label>
-        咖啡粉重量（克）:
-        <input type="number" v-model.number="coffeeWeight" style="color: #555555"/>
-      </label>
-    </div>
-    <div v-if="useIce">
-      <h3>冰块重量和注水信息</h3>
-      <p>冰块重量: {{ iceWeight }} 克</p>
-      <p>第一次注水: {{ waterWeights[0] }} 克，时间: 0 秒</p>
-      <p>第二次注水: {{ waterWeights[1] }} 克，时间: {{ intervals[0] }} 秒</p>
-    </div>
-    <div v-else>
-      <h3>注水信息</h3>
-      <p>第一次注水: {{ waterWeights[0] }} 克，时间: 0 秒</p>
-      <p>第二次注水: {{ waterWeights[1] }} 克，时间: {{ intervals[0] }} 秒</p>
-      <p>第三次注水: {{ waterWeights[2] }} 克，时间: {{ intervals[1] }} 秒</p>
-    </div>
-    <div>
-      <button @click="startTimer">开始计时</button>
-      <button @click="resetTimer">重置计时</button>
-      <p>当前时间: {{ currentTime }} 秒</p>
-    </div>
+
+  <div class="brewing">
+
+
+    <section class="content">
+      <section class="hero">
+        <div class="hero-texts-content">
+          <div class="texts">
+            {{ heroTitle }}
+          </div>
+        </div>
+      </section>
+
+      <section
+          class="forms flex mt-4 flex-col gap-4 dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900dark:bg-neutral-900"
+          style="">
+
+
+        <div class="flex justify-between">
+          <div class="text-xl font-bold">冲煮方案选择</div>
+          <div class="flex gap-3 items-center">
+            <div>自定义</div>
+            <input type="checkbox" id="hs-basic-usage" class="switchs">
+          </div>
+        </div>
+
+
+        <select
+            class="py-3 dark:bg-transparent bg-transparent px-4 pe-9 block border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none  dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+
+        >
+          <option>夏季八冲</option>
+          <option>夏季八冲-冰手冲版</option>
+        </select>
+
+
+        <div class="grid grid-cols-4">
+          <div class="flex items-center flex-col ">
+
+            <div style="font-family: wyxqn; font-size: 28px">1 : 10</div>
+            <div class="text-sm">粉水比</div>
+          </div>
+
+          <div class="flex items-center flex-col ">
+
+            <div style="font-family: wyxqn; font-size: 28px">95</div>
+            <div class="text-sm">水温</div>
+          </div>
+
+          <div class="flex items-center flex-col ">
+            <div style="font-family: wyxqn; font-size: 28px">800</div>
+            <div class="text-sm">研磨度（μm）</div>
+          </div>
+
+          <div class="flex items-center flex-col ">
+
+            <div style="font-family: wyxqn; font-size: 28px">冷饮</div>
+            <div class="text-sm">品类</div>
+          </div>
+        </div>
+
+        <!--        <div>-->
+
+        <!--          <div class="text-xl mt-3">提示</div>-->
+        <!--          <ul class="mt-2">-->
+        <!--            <li>冰手冲的粉水比应在1:8和1:10之间</li>-->
+        <!--            <li>水温可以更高一些，提升萃取效率</li>-->
+        <!--          </ul>-->
+        <!--        </div>-->
+      </section>
+
+
+      <section class="forms flex gap-4  flex-col" style="margin-top: 20px;">
+
+        <div class="flex justify-between">
+          <div class="text-xl font-bold">粉重选择 (g)</div>
+        </div>
+        <div class="flex w-full">
+          <ul class="flex gap-3 w-full">
+            <li v-for="(item, idx) in radios2" :key="idx" style="" class="flex-1">
+              <label :for="item.name" class="relative">
+                <input :id="item.name" type="radio" :checked="idx == 1 ? true : false" name="payment"
+                       class="sr-only peer"/>
+                <div
+                    class="w-full flex  flex-col gap-x-3 items-start px-4 py-2 cursor-pointer rounded-lg border ring-indigo-600 peer-checked:ring-2 duration-200">
+                  <div class=" flex w-full justify-center">
+                    <h3 class="leading-none font-medium  flex" style="font-family: wyxqn">
+                      {{ item.name }}
+                    </h3>
+                  </div>
+                </div>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="forms flex flex-col" style="margin-top: 24px;">
+
+
+        <div class="flex justify-between">
+          <div class="text-xl font-bold">冲煮建议</div>
+          <!--          <div class="flex gap-3 items-center">-->
+          <!--            <div>自定义</div>-->
+          <!--            <input type="checkbox" id="hs-basic-usage" class="switchs">-->
+          <!--          </div>-->
+        </div>
+
+
+        <div class="grid grid-cols-3 gap-3 mt-4">
+
+          <div class="flex items-center flex-col">
+
+            <div class="flex items-end" style="font-family: wyxqn">
+              <div class="text-6xl">50</div>
+              <div class="text-2xl ml-1">g</div>
+            </div>
+            <div class="flex flex-col text-sm w-full mt-6">
+              <!--              #836960-->
+              <div style="width: 100%; height: 3px; border-radius: 4px; background: #977F77"></div>
+
+              <div class="mt-2">
+                <div class="text-gray-400 " style="">焖蒸</div>
+              </div>
+
+            </div>
+          </div>
+
+
+          <div class="flex items-center flex-col">
+
+            <div class="flex items-end" style="font-family: wyxqn">
+              <div class="text-6xl">110</div>
+              <div class="text-2xl ml-1">g</div>
+            </div>
+            <div class="flex flex-col text-sm w-full mt-6">
+
+              <div style="width: 100%; height: 3px; border-radius: 4px; background: #5C4C47"></div>
+
+              <div class="mt-2">
+                <div class="text-gray-400 " style="">中段</div>
+              </div>
+
+            </div>
+          </div>
+          <div class="flex items-center flex-col">
+
+            <div class="flex items-end" style="font-family: wyxqn">
+              <div class="text-6xl">100</div>
+              <div class="text-2xl ml-1">g</div>
+            </div>
+            <div class="flex flex-col text-sm w-full mt-6">
+
+              <div style="width: 100%; height: 3px; border-radius: 4px; background: #5C4C47"></div>
+
+              <div class="mt-2">
+                <div class="text-gray-400 " style="">后段</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="text-sm text-gray-300 mt-2">Tips: 焖蒸30s，10s内注水完成，无需间隔</div>
+
+      </section>
+
+      <div class="mt-4 gap-4 flex flex-col">
+        <div>
+          <div class="flex items-end" style="font-family: wyxqn">
+            <div class="text-6xl">{{ currentTime }}</div>
+            <div class="text-2xl ml-1">S</div>
+          </div>
+          <p>当前用时</p>
+        </div>
+
+        <div class="flex gap-4">
+          <button class="forms flex flex-1 justify-center" @click="startTimer">开始冲煮</button>
+          <button class="forms flex flex-1 justify-center" @click="resetTimer">结束冲煮</button>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
 
-<script>
+<script setup>
 import {computed, ref, watch} from 'vue';
 
-export default {
-  setup() {
-    const useIce = ref(false);
-    const coffeeWeight = ref(0);
-    const currentTime = ref(0);
-    let timer = null;
+const useIce = ref(false);
+const coffeeWeight = ref(0);
+const currentTime = ref(0);
+let timer = null;
 
-    const iceWeight = computed(() => coffeeWeight.value * 1.5);
+const aa = ref(true)
 
-    const waterWeights = computed(() => {
-      if (useIce.value) {
-        return [coffeeWeight.value * 10, coffeeWeight.value * 5];
-      } else {
-        return [
-          coffeeWeight.value * 3,
-          coffeeWeight.value * 3,
-          coffeeWeight.value * 4
-        ];
-      }
-    });
 
-    const intervals = computed(() => {
-      if (useIce.value) {
-        return [60];
-      } else {
-        return [45, 90];
-      }
-    });
+const heroTitle = `手冲咖啡\n冲煮参数手册`
 
-    const startTimer = () => {
-      resetTimer();
-      timer = setInterval(() => {
-        currentTime.value++;
-        checkIntervals();
-      }, 1000);
-    };
+const iceWeight = computed(() => coffeeWeight.value * 1.5);
 
-    const resetTimer = () => {
-      clearInterval(timer);
-      currentTime.value = 0;
-    };
 
-    const checkIntervals = () => {
-      intervals.value.forEach((interval, index) => {
-        if (currentTime.value === interval) {
-          playSound();
-          alert(`第${index + 1}次注水时间到了！`);
-        }
-      });
-    };
-
-    const playSound = () => {
-      const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
-      audio.play();
-    };
-
-    watch([useIce, coffeeWeight], () => {
-      console.log('使用冰块:', useIce.value);
-      console.log('咖啡粉重量:', coffeeWeight.value);
-    });
-
-    return {
-      useIce,
-      coffeeWeight,
-      iceWeight,
-      waterWeights,
-      intervals,
-      currentTime,
-      startTimer,
-      resetTimer
-    };
+const radios = ref([
+  {
+    name: "常温",
+    description: "It's the faster, safer way to send and receive money.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.60676 23.1864L8.02271 20.5444L7.09617 20.5229H2.67188L5.74654 1.02757C5.75608 0.968712 5.7871 0.913836 5.83243 0.874866C5.87776 0.835896 5.93582 0.814423 5.99626 0.814423H13.4562C15.9328 0.814423 17.642 1.32978 18.5343 2.34698C18.9526 2.82417 19.219 3.32282 19.3479 3.87159C19.4831 4.44739 19.4855 5.13533 19.3535 5.97438L19.3439 6.03562V6.57325L19.7622 6.81025C20.1146 6.99715 20.3945 7.21108 20.6092 7.45604C20.9671 7.86403 21.1986 8.38257 21.2964 8.99734C21.3974 9.62961 21.364 10.382 21.1986 11.2338C21.0077 12.2136 20.6991 13.0669 20.2824 13.7652C19.899 14.4086 19.4107 14.9423 18.8309 15.3558C18.2774 15.7487 17.6197 16.047 16.8761 16.2378C16.1555 16.4255 15.334 16.5202 14.4329 16.5202H13.8523C13.4372 16.5202 13.0339 16.6697 12.7174 16.9377C12.4001 17.2113 12.1901 17.5851 12.1257 17.9939L12.082 18.2317L11.3471 22.8882L11.3137 23.0592C11.3049 23.1133 11.2898 23.1403 11.2676 23.1586C11.2477 23.1753 11.219 23.1864 11.1912 23.1864H7.60676Z" fill="#253B80" />
+                <path d="M20.1586 6.09761C20.1364 6.23997 20.1109 6.38551 20.0823 6.53503C19.0985 11.586 15.7327 13.3309 11.4341 13.3309H9.24541C8.71971 13.3309 8.27673 13.7127 8.19481 14.2312L7.07422 21.3381L6.75689 23.3526C6.70361 23.693 6.96606 24 7.30963 24H11.1915C11.6512 24 12.0417 23.666 12.1141 23.2126L12.1523 23.0154L12.8831 18.3772L12.9301 18.1227C13.0016 17.6678 13.3929 17.3337 13.8526 17.3337H14.4332C18.1942 17.3337 21.1384 15.8067 21.999 11.388C22.3584 9.54209 22.1723 8.00078 21.2212 6.91678C20.9333 6.58991 20.5762 6.31871 20.1586 6.09761Z" fill="#179BD7" />
+                <path d="M19.13 5.68728C18.9797 5.64354 18.8246 5.60378 18.6655 5.56799C18.5057 5.53299 18.3419 5.50198 18.1732 5.47494C17.5831 5.3795 16.9365 5.33417 16.2438 5.33417H10.3967C10.2528 5.33417 10.116 5.36678 9.9935 5.42563C9.72389 5.55526 9.52348 5.81056 9.47496 6.12311L8.2311 14.0014L8.19531 14.2313C8.27723 13.7127 8.72022 13.331 9.24591 13.331H11.4346C15.7332 13.331 19.099 11.5853 20.0828 6.53508C20.1122 6.38556 20.1369 6.24002 20.1591 6.09766C19.9102 5.96564 19.6406 5.85271 19.3503 5.75648C19.2787 5.73262 19.2048 5.70955 19.13 5.68728Z" fill="#222D65" />
+                <path d="M9.47421 6.12308C9.52272 5.81052 9.72314 5.55523 9.99275 5.42639C10.116 5.36753 10.252 5.33493 10.396 5.33493H16.2431C16.9358 5.33493 17.5824 5.38026 18.1725 5.4757C18.3411 5.50274 18.5049 5.53375 18.6648 5.56875C18.8238 5.60453 18.9789 5.6443 19.1292 5.68804C19.204 5.71031 19.278 5.73337 19.3503 5.75644C19.6406 5.85267 19.9102 5.9664 20.1592 6.09763C20.4518 4.23104 20.1568 2.96014 19.1475 1.80933C18.0349 0.5424 16.0267 0 13.4571 0H5.99712C5.47222 0 5.02446 0.381748 4.94334 0.901084L1.83607 20.5969C1.77483 20.9866 2.07546 21.3381 2.46834 21.3381H7.07397L8.23034 14.0014L9.47421 6.12308Z" fill="#253B80" />
+            </svg>`
+  },
+  {
+    name: "加冰",
+    description: " payment-processing corporation worldwide.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2436 6.17905H8.75391V17.8412H15.2436V6.17905Z" fill="#FF5F00" />
+                <path d="M9.16737 12.0105C9.16635 10.8874 9.42086 9.77873 9.91165 8.76848C10.4024 7.75824 11.1166 6.87289 12.0002 6.17946C10.906 5.31945 9.59201 4.78462 8.20829 4.63611C6.82457 4.48759 5.42699 4.73138 4.17527 5.33961C2.92356 5.94784 1.86822 6.89597 1.12988 8.07562C0.391546 9.25528 0 10.6189 0 12.0105C0 13.4022 0.391546 14.7658 1.12988 15.9455C1.86822 17.1251 2.92356 18.0732 4.17527 18.6815C5.42699 19.2897 6.82457 19.5335 8.20829 19.385C9.59201 19.2365 10.906 18.7016 12.0002 17.8416C11.1166 17.1482 10.4024 16.2628 9.91165 15.2526C9.42087 14.2423 9.16635 13.1337 9.16737 12.0105Z" fill="#EB001B" />
+                <path d="M23.9998 12.0105C23.9998 13.4022 23.6083 14.7658 22.87 15.9454C22.1317 17.1251 21.0764 18.0732 19.8247 18.6814C18.5731 19.2897 17.1755 19.5335 15.7918 19.385C14.4081 19.2365 13.0941 18.7016 12 17.8416C12.8828 17.1475 13.5964 16.262 14.0871 15.2519C14.5778 14.2418 14.8328 13.1335 14.8328 12.0105C14.8328 10.8876 14.5778 9.77925 14.0871 8.76917C13.5964 7.75908 12.8828 6.87359 12 6.17946C13.0941 5.31945 14.4081 4.78462 15.7918 4.63611C17.1755 4.48759 18.5731 4.73139 19.8247 5.33962C21.0764 5.94786 22.1317 6.89599 22.87 8.07565C23.6083 9.25531 23.9998 10.6189 23.9998 12.0105Z" fill="#F79E1B" />
+                <path d="M23.2934 16.6062V16.3674H23.3897V16.3188H23.1445V16.3674H23.2408V16.6062H23.2934ZM23.7695 16.6062V16.3183H23.6943L23.6079 16.5163L23.5214 16.3183H23.4462V16.6062H23.4993V16.389L23.5803 16.5762H23.6354L23.7164 16.3886V16.6062H23.7695Z" fill="#F79E1B" />
+            </svg>`
   }
+])
+
+const radios2 = ref([
+  {
+    name: "10",
+    description: "It's the faster, safer way to send and receive money.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.60676 23.1864L8.02271 20.5444L7.09617 20.5229H2.67188L5.74654 1.02757C5.75608 0.968712 5.7871 0.913836 5.83243 0.874866C5.87776 0.835896 5.93582 0.814423 5.99626 0.814423H13.4562C15.9328 0.814423 17.642 1.32978 18.5343 2.34698C18.9526 2.82417 19.219 3.32282 19.3479 3.87159C19.4831 4.44739 19.4855 5.13533 19.3535 5.97438L19.3439 6.03562V6.57325L19.7622 6.81025C20.1146 6.99715 20.3945 7.21108 20.6092 7.45604C20.9671 7.86403 21.1986 8.38257 21.2964 8.99734C21.3974 9.62961 21.364 10.382 21.1986 11.2338C21.0077 12.2136 20.6991 13.0669 20.2824 13.7652C19.899 14.4086 19.4107 14.9423 18.8309 15.3558C18.2774 15.7487 17.6197 16.047 16.8761 16.2378C16.1555 16.4255 15.334 16.5202 14.4329 16.5202H13.8523C13.4372 16.5202 13.0339 16.6697 12.7174 16.9377C12.4001 17.2113 12.1901 17.5851 12.1257 17.9939L12.082 18.2317L11.3471 22.8882L11.3137 23.0592C11.3049 23.1133 11.2898 23.1403 11.2676 23.1586C11.2477 23.1753 11.219 23.1864 11.1912 23.1864H7.60676Z" fill="#253B80" />
+                <path d="M20.1586 6.09761C20.1364 6.23997 20.1109 6.38551 20.0823 6.53503C19.0985 11.586 15.7327 13.3309 11.4341 13.3309H9.24541C8.71971 13.3309 8.27673 13.7127 8.19481 14.2312L7.07422 21.3381L6.75689 23.3526C6.70361 23.693 6.96606 24 7.30963 24H11.1915C11.6512 24 12.0417 23.666 12.1141 23.2126L12.1523 23.0154L12.8831 18.3772L12.9301 18.1227C13.0016 17.6678 13.3929 17.3337 13.8526 17.3337H14.4332C18.1942 17.3337 21.1384 15.8067 21.999 11.388C22.3584 9.54209 22.1723 8.00078 21.2212 6.91678C20.9333 6.58991 20.5762 6.31871 20.1586 6.09761Z" fill="#179BD7" />
+                <path d="M19.13 5.68728C18.9797 5.64354 18.8246 5.60378 18.6655 5.56799C18.5057 5.53299 18.3419 5.50198 18.1732 5.47494C17.5831 5.3795 16.9365 5.33417 16.2438 5.33417H10.3967C10.2528 5.33417 10.116 5.36678 9.9935 5.42563C9.72389 5.55526 9.52348 5.81056 9.47496 6.12311L8.2311 14.0014L8.19531 14.2313C8.27723 13.7127 8.72022 13.331 9.24591 13.331H11.4346C15.7332 13.331 19.099 11.5853 20.0828 6.53508C20.1122 6.38556 20.1369 6.24002 20.1591 6.09766C19.9102 5.96564 19.6406 5.85271 19.3503 5.75648C19.2787 5.73262 19.2048 5.70955 19.13 5.68728Z" fill="#222D65" />
+                <path d="M9.47421 6.12308C9.52272 5.81052 9.72314 5.55523 9.99275 5.42639C10.116 5.36753 10.252 5.33493 10.396 5.33493H16.2431C16.9358 5.33493 17.5824 5.38026 18.1725 5.4757C18.3411 5.50274 18.5049 5.53375 18.6648 5.56875C18.8238 5.60453 18.9789 5.6443 19.1292 5.68804C19.204 5.71031 19.278 5.73337 19.3503 5.75644C19.6406 5.85267 19.9102 5.9664 20.1592 6.09763C20.4518 4.23104 20.1568 2.96014 19.1475 1.80933C18.0349 0.5424 16.0267 0 13.4571 0H5.99712C5.47222 0 5.02446 0.381748 4.94334 0.901084L1.83607 20.5969C1.77483 20.9866 2.07546 21.3381 2.46834 21.3381H7.07397L8.23034 14.0014L9.47421 6.12308Z" fill="#253B80" />
+            </svg>`
+  },
+  {
+    name: "15",
+    description: " payment-processing corporation worldwide.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2436 6.17905H8.75391V17.8412H15.2436V6.17905Z" fill="#FF5F00" />
+                <path d="M9.16737 12.0105C9.16635 10.8874 9.42086 9.77873 9.91165 8.76848C10.4024 7.75824 11.1166 6.87289 12.0002 6.17946C10.906 5.31945 9.59201 4.78462 8.20829 4.63611C6.82457 4.48759 5.42699 4.73138 4.17527 5.33961C2.92356 5.94784 1.86822 6.89597 1.12988 8.07562C0.391546 9.25528 0 10.6189 0 12.0105C0 13.4022 0.391546 14.7658 1.12988 15.9455C1.86822 17.1251 2.92356 18.0732 4.17527 18.6815C5.42699 19.2897 6.82457 19.5335 8.20829 19.385C9.59201 19.2365 10.906 18.7016 12.0002 17.8416C11.1166 17.1482 10.4024 16.2628 9.91165 15.2526C9.42087 14.2423 9.16635 13.1337 9.16737 12.0105Z" fill="#EB001B" />
+                <path d="M23.9998 12.0105C23.9998 13.4022 23.6083 14.7658 22.87 15.9454C22.1317 17.1251 21.0764 18.0732 19.8247 18.6814C18.5731 19.2897 17.1755 19.5335 15.7918 19.385C14.4081 19.2365 13.0941 18.7016 12 17.8416C12.8828 17.1475 13.5964 16.262 14.0871 15.2519C14.5778 14.2418 14.8328 13.1335 14.8328 12.0105C14.8328 10.8876 14.5778 9.77925 14.0871 8.76917C13.5964 7.75908 12.8828 6.87359 12 6.17946C13.0941 5.31945 14.4081 4.78462 15.7918 4.63611C17.1755 4.48759 18.5731 4.73139 19.8247 5.33962C21.0764 5.94786 22.1317 6.89599 22.87 8.07565C23.6083 9.25531 23.9998 10.6189 23.9998 12.0105Z" fill="#F79E1B" />
+                <path d="M23.2934 16.6062V16.3674H23.3897V16.3188H23.1445V16.3674H23.2408V16.6062H23.2934ZM23.7695 16.6062V16.3183H23.6943L23.6079 16.5163L23.5214 16.3183H23.4462V16.6062H23.4993V16.389L23.5803 16.5762H23.6354L23.7164 16.3886V16.6062H23.7695Z" fill="#F79E1B" />
+            </svg>`
+  },
+  {
+    name: "20",
+    description: " payment-processing corporation worldwide.",
+    icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.2436 6.17905H8.75391V17.8412H15.2436V6.17905Z" fill="#FF5F00" />
+                <path d="M9.16737 12.0105C9.16635 10.8874 9.42086 9.77873 9.91165 8.76848C10.4024 7.75824 11.1166 6.87289 12.0002 6.17946C10.906 5.31945 9.59201 4.78462 8.20829 4.63611C6.82457 4.48759 5.42699 4.73138 4.17527 5.33961C2.92356 5.94784 1.86822 6.89597 1.12988 8.07562C0.391546 9.25528 0 10.6189 0 12.0105C0 13.4022 0.391546 14.7658 1.12988 15.9455C1.86822 17.1251 2.92356 18.0732 4.17527 18.6815C5.42699 19.2897 6.82457 19.5335 8.20829 19.385C9.59201 19.2365 10.906 18.7016 12.0002 17.8416C11.1166 17.1482 10.4024 16.2628 9.91165 15.2526C9.42087 14.2423 9.16635 13.1337 9.16737 12.0105Z" fill="#EB001B" />
+                <path d="M23.9998 12.0105C23.9998 13.4022 23.6083 14.7658 22.87 15.9454C22.1317 17.1251 21.0764 18.0732 19.8247 18.6814C18.5731 19.2897 17.1755 19.5335 15.7918 19.385C14.4081 19.2365 13.0941 18.7016 12 17.8416C12.8828 17.1475 13.5964 16.262 14.0871 15.2519C14.5778 14.2418 14.8328 13.1335 14.8328 12.0105C14.8328 10.8876 14.5778 9.77925 14.0871 8.76917C13.5964 7.75908 12.8828 6.87359 12 6.17946C13.0941 5.31945 14.4081 4.78462 15.7918 4.63611C17.1755 4.48759 18.5731 4.73139 19.8247 5.33962C21.0764 5.94786 22.1317 6.89599 22.87 8.07565C23.6083 9.25531 23.9998 10.6189 23.9998 12.0105Z" fill="#F79E1B" />
+                <path d="M23.2934 16.6062V16.3674H23.3897V16.3188H23.1445V16.3674H23.2408V16.6062H23.2934ZM23.7695 16.6062V16.3183H23.6943L23.6079 16.5163L23.5214 16.3183H23.4462V16.6062H23.4993V16.389L23.5803 16.5762H23.6354L23.7164 16.3886V16.6062H23.7695Z" fill="#F79E1B" />
+            </svg>`
+  }
+])
+
+const plan = ref('')
+
+const stepsItems = ref(["Profile", "Contact", "Identity"])
+const currentStep = 2
+
+const waterWeights = computed(() => {
+  if (useIce.value) {
+    return [coffeeWeight.value * 10, coffeeWeight.value * 5];
+  } else {
+    return [
+      coffeeWeight.value * 3,
+      coffeeWeight.value * 3,
+      coffeeWeight.value * 4
+    ];
+  }
+});
+
+const intervals = computed(() => {
+  if (useIce.value) {
+    return [60];
+  } else {
+    return [45, 90];
+  }
+});
+
+const startTimer = () => {
+  resetTimer();
+  timer = setInterval(() => {
+    currentTime.value++;
+    checkIntervals();
+  }, 1000);
 };
+
+const resetTimer = () => {
+  clearInterval(timer);
+  currentTime.value = 0;
+};
+
+const checkIntervals = () => {
+  intervals.value.forEach((interval, index) => {
+    if (currentTime.value === interval) {
+      playSound();
+      alert(`第${index + 1}次注水时间到了！`);
+    }
+  });
+};
+
+const playSound = () => {
+  const audio = new Audio('https://www.soundjay.com/button/beep-07.wav');
+  audio.play();
+};
+
+watch([useIce, coffeeWeight], () => {
+  console.log('使用冰块:', useIce.value);
+  console.log('咖啡粉重量:', coffeeWeight.value);
+});
+
 </script>
 
-<style scoped>
-.ice-tip {
-  color: red;
-  font-weight: bold;
+<style scoped lang="scss">
+.brewing {
+  height: 100dvh;
+  //background: #2E2522;
+  background-image: url("/home-bg.jpg");
+  background-position: center; /* 居中显示 */
+  background-size: cover; /* 按比例缩放以适应容器 */
+  //filter: brightness(40%);
+
+  background-repeat: no-repeat;
+  color: white;
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'SimSun', 'Arial', sans-serif;
+
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    //height: 100dvh;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明灰色遮罩 */
+    pointer-events: none; /* 确保遮罩不会影响点击事件 */
+  }
+
+
+  .content {
+    position: relative;
+    z-index: 10; /* 确保内容在遮罩之上 */
+    padding: 24px;
+    //color: white;
+    //text-align: center;
+    //padding-top: 130px; /* 使文本垂直居中 */
+
+    .hero {
+
+      //position: relative;
+      //height: 260px;
+
+      //.bg-image {
+      //  object-fit: cover;
+      //  //height: 260px;
+      //  width: 100%;
+      //  filter: brightness(40%);
+      //}
+
+      .hero-texts-content {
+        //position: absolute;
+        //top: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        //padding: 52px;
+
+        .texts {
+          font-family: wyxqn;
+          white-space: break-spaces;
+          font-size: 40px;
+          font-weight: 300;
+        }
+      }
+    }
+
+    .forms {
+      background: rgba(255, 255, 255, 0.02); /* 半透明的黑色背景 */
+      backdrop-filter: blur(28px); /* 高斯模糊 */
+      padding: 16px;
+      border-radius: 8px;
+    }
+  }
+
+  .switchs {
+    @apply relative w-[3.25rem] h-7 p-px border-transparent text-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 checked:bg-none checked:text-blue-600 checked:border-blue-600 focus:checked:border-blue-600 before:inline-block before:size-6 checked:before:bg-blue-200 before:translate-x-0 checked:before:translate-x-full before:rounded-full before:shadow before:transform before:ring-0 before:transition before:ease-in-out before:duration-200
+  }
 }
 </style>
-
-
-<!--<template>-->
-<!--  <div class="vh-homes gap-8">-->
-<!--    <div class="flex gap-12">-->
-<!--      <img src="/vite.svg" class="logo" alt="Vite logo" />-->
-<!--      <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />-->
-<!--    </div>-->
-
-<!--    <h1>{{ msg }}</h1>-->
-
-<!--    <div>{{ msg }}</div>-->
-
-<!--    <div class="selector">-->
-<!--      <input type="checkbox" name="darken" id="" v-model="darken" />-->
-<!--      <label for="darken">暗黑模式</label>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script setup>-->
-<!--import { ref, reactive } from 'vue'-->
-<!--const props = defineProps({})-->
-
-<!--const msg = ref('Hello, Vite + Vue')-->
-
-<!--let darken = ref(false)-->
-<!--</script>-->
-
-<!--<style lang="scss" scoped>-->
-<!--.vh-homes {-->
-<!--  height: 150vh;-->
-<!--  width: 100%;-->
-<!--  display: flex;-->
-<!--  flex-direction: column;-->
-<!--  align-items: center;-->
-<!--  .logo {-->
-<!--    height: 96px;-->
-<!--    will-change: filter;-->
-<!--    transition: filter 300ms;-->
-<!--  }-->
-<!--  .logo:hover {-->
-<!--    filter: drop-shadow(0 0 2em #646cffaa);-->
-<!--  }-->
-<!--  .logo.vue:hover {-->
-<!--    filter: drop-shadow(0 0 2em #42b883aa);-->
-<!--  }-->
-
-<!--  .selector {-->
-<!--    // background: var(&#45;&#45;primary);-->
-
-<!--    background: $secondary;-->
-<!--  }-->
-<!--}-->
-<!--</style>-->
