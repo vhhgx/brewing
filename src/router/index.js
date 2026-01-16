@@ -1,51 +1,59 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../pages/home.vue'
-import Default from '../layout/defaultLayout.vue'
-import app from '@/main.js'
 
 const routes = [
   {
     path: '/',
-    name: 'Layout',
-    component: Default,
-    children: [
-      {
-        path: '/',
-        name: 'Home',
-        component: Home,
-      },
-    ],
+    name: 'Home',
+    component: () => import('@/views/HomeView.vue'),
+    meta: { title: '首页', showBottomSheet: true }
   },
+  {
+    path: '/recipe/:id',
+    name: 'RecipeDetail',
+    component: () => import('@/components/recipes/RecipeDetail.vue'),
+    meta: { title: '方案详情', showBottomSheet: false }
+  },
+  {
+    path: '/brewing/:recipeId',
+    name: 'Brewing',
+    component: () => import('@/views/BrewingView.vue'),
+    meta: { title: '准备冲煮', showBottomSheet: false }
+  },
+  {
+    path: '/tasting/:recordId',
+    name: 'TastingNotes',
+    component: () => import('@/views/TastingNotesView.vue'),
+    meta: { title: '品鉴记录', showBottomSheet: false }
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: () => import('@/views/HistoryView.vue'),
+    meta: { title: '历史记录', showBottomSheet: true }
+  },
+  {
+    path: '/record/:id',
+    name: 'RecordDetail',
+    component: () => import('@/components/tasting/RecordDetail.vue'),
+    meta: { title: '记录详情', showBottomSheet: false }
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: () => import('@/views/ProfileView.vue'),
+    meta: { title: '个人中心', showBottomSheet: true }
+  }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (to.hash) {
-      return {
-        el: to.hash,
-        behavior: 'smooth', // 平滑滚动
-      }
-    }
-  },
+  routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   app.config.globalProperties.$loading.show({txt: '加载中'})
-//   setTimeout(() => {
-//     window.scrollTo({
-//       top: 0,
-//       behavior: 'smooth' // 平滑滚动效果
-//     });
-//     next();
-//   }, 1000)
-// });
-//
-// router.afterEach((to, from) => {
-//   setTimeout(() => {
-//     app.config.globalProperties.$loading.hide()
-//   }, 1000)
-// })
+// 全局前置守卫：设置页面标题
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title ? `${to.meta.title} - 手冲咖啡助手` : '手冲咖啡助手'
+  next()
+})
 
 export default router
