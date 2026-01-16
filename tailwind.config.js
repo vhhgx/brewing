@@ -50,5 +50,5 @@ export default {
     //   h4: 1.5
     // }
   },
-  plugins: [require('@tailwindcss/forms'), 'node_modules/preline/dist/*.js']
+  plugins: [require('@tailwindcss/forms'), require('preline/plugin')]
 }
